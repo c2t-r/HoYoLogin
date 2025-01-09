@@ -1,0 +1,30 @@
+name: HoYoLab AutoCheckin
+
+on:
+  schedule:
+    - cron: "0 20 * * *"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v2
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Execute main script
+        run: |
+          python3 main.py
+        env:
+          cookie: ${{ secrets.HOYOLAB_COOKIE }}
+          webhook: ${{ secrets.WEBHOOK_URL }}
