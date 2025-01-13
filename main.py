@@ -47,8 +47,6 @@ def main():
     for card in card_obj["data"]["list"]:
         payload = [i for i in payloads if i["game_id"] == card["game_id"]][0]
         print(card["game_name"])
-        print(f'{card["nickname"]} (UID:{card["game_role_id"]}) {card["region_name"]}({card["region"]}) Lv.{card["level"]}')
-        print(", ".join([f'{i["name"]}: {i["value"]}' for i in card["data"]]))
 
         info_url = f'{payload["url"]}info?lang={lang}&act_id={payload["act_id"]}'
         sign_url = f'{payload["url"]}sign?lang={lang}'
@@ -77,9 +75,9 @@ def main():
         if info_resp["data"]["is_sign"] == False:
             response = post(sign_url, {**token, "x-rpc-signgame": payload["id"]}, json.dumps({"act_id": payload["act_id"], "lang": lang}))
             sign_resp = parse_resp(response)
-            print(f'{sign_resp["message"]=}')
+            print(f'response: {sign_resp["message"]}')
             if sign_resp["message"] == "OK":
-                print("successfully signed!")
+                print("successfully signed in!")
                 data["content"] = "successfully signed in!"
                 embed["color"] = 0x38f4af
 
